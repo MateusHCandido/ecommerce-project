@@ -1,4 +1,4 @@
-name: CI-DEV-ENV
+name: CI INVENTORY-SERVICE
 
 on:
   push:
@@ -25,7 +25,7 @@ jobs:
         cache: maven
       
     - name: Build Application JAR
-      working-directory: ./product-service
+      working-directory: ./inventory-service
       run: mvn clean package
 
     - name: Docker Compose Build
@@ -33,7 +33,7 @@ jobs:
 
     - name: Push to Docker Hub Container Registry
       run: |
-        docker tag ${{ secrets.DOCKER_USERNAME }}/ecommerce-product-service:latest ${{ secrets.DOCKER_USERNAME }}/ecommerce-product-service:${{ github.run_id }}
+        docker tag ${{ secrets.DOCKER_USERNAME }}/ecommerce-inventory-service:latest ${{ secrets.DOCKER_USERNAME }}/ecommerce-inventory-service:${{ github.run_id }}
         
-        docker push ${{ secrets.DOCKER_USERNAME }}/ecommerce-product-service:${{ github.run_id }}
-        docker push ${{ secrets.DOCKER_USERNAME }}/ecommerce-product-service:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/ecommerce-inventory-service:${{ github.run_id }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/ecommerce-inventory-service:latest
