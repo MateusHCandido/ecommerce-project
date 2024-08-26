@@ -1,4 +1,4 @@
-name: CI FROM PRODUCT-SERVICE
+name: CI PRODUCT-SERVICE
 
 on:
   push:
