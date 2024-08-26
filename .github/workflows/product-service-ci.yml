@@ -1,4 +1,4 @@
-name: CI-DEV-ENV
+name: CI FROM PRODUCT-SERVICE
 
 on:
   push:
