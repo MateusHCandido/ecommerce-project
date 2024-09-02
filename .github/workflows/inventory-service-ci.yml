@@ -2,7 +2,7 @@ name: CI INVENTORY-SERVICE
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "inventory-service" ]
 
 
 jobs:
