@@ -32,4 +32,25 @@ public class ProductStockEntityService implements ProductStockDomainRepository {
 
         productStockEntityRepository.save(new ProductStockEntity(productEntity, productQuantity));
     }
+
+    @Override
+    public void reduceStock(ProductStock productStock) {
+        String productName = productStock.getProduct().getProductName();
+        ProductCategory productCategory = productStock.getProduct().getProductCategory();
+        Long quantityFoReduce = productStock.getQuantityForStock();
+
+        ProductEntity productEntity = productEntityRepository.findByProductNameAndProductCategory(productName, productCategory);
+        if (productEntity == null) throw new ProductNotFoundException("product not found");
+
+        ProductStockEntity stockEntity = productStockEntityRepository.findByProduct(productEntity);
+
+        Long newProductQuantityInStock = stockEntity.getProductQuantity() - quantityFoReduce;
+
+        stockEntity.setProductQuantity(newProductQuantityInStock);
+
+        productStockEntityRepository.save(stockEntity);
+    }
+
+
+
 }

@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: inventory-service
+  kafka:
+    bootstrap-servers: kafka:9093
+
+port: 8081
