@@ -52,6 +52,40 @@ services:
       - zookeeper
     volumes:
       - kafka-data:/kafka
+      -
+  product-service:
+    image: mateushcds/ecommerce-product-service
+    restart: always
+    build: ./product-service
+    working_dir: /app
+    environment:
+      TZ: America/Sao_Paulo
+      SPRING.APPLICATION.NAME: product-service
+      SPRING.PROFILES.ACTIVE: dev
+    depends_on:
+      - kafka
+      - -mongo
+    ports:
+      - "8080:8080"
+    command: mvn spring-boot:run
+
+  inventory-service:
+    image: mateushcds/ecommerce-inventory-service
+    restart: always
+    build: ./inventory-service
+    working_dir: /app
+    environment:
+      TZ: America/Sao_Paulo
+      SPRING.APPLICATION.NAME: inventory-service
+      SPRING.PROFILES.ACTIVE: dev
+    depends_on:
+      - kafka
+      - mysql
+    ports:
+      - "8081:8081"
+    command: mvn spring-boot:run
+
+
 
 volumes:
   kafka-data:
