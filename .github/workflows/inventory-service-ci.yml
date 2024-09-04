@@ -22,12 +22,13 @@ jobs:
         java-version: '17'
         distribution: 'adopt'
         cache: maven
-        
-    - name: Start Docker Compose Services
-      run: docker compose up -d
-      
-    - name: Build Application JAR
+
+    - name: Build Application Iventory-Service JAR
       working-directory: ./inventory-service
+      run: mvn clean package
+
+    - name: Build Application Product-Service JAR
+      working-directory: ./product-service
       run: mvn clean package
 
     - name: Docker Compose Build
