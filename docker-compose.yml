@@ -30,7 +30,21 @@ services:
       - ecommerce-network
     depends_on:
       - zookeeper
-
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: ecommerce_db
+      MYSQL_USER: mateuzzo
+      MYSQL_PASSWORD: payment123*
+      MYSQL_ROOT_PASSWORD: rootpassword
+      TZ: America/Sao_Paulo
+    ports:
+      - "3306:3306"
+    networks:
+      - ecommerce-network
+      
   inventory-service:
     image: mateushcds/ecommerce-inventory-service
     restart: always
