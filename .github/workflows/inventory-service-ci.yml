@@ -14,7 +14,6 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-
           
     - uses: actions/checkout@v4
     - name: Set up JDK 17
@@ -23,6 +22,9 @@ jobs:
         java-version: '17'
         distribution: 'adopt'
         cache: maven
+        
+    - name: Start Docker Compose Services
+      run: docker compose up -d
       
     - name: Build Application JAR
       working-directory: ./inventory-service
