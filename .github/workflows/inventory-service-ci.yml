@@ -23,13 +23,19 @@ jobs:
         distribution: 'adopt'
         cache: maven
 
-    - name: Build Application Inventory-Service JAR
-      working-directory: ./inventory-service
+        
+    - name: Start Docker Compose Services
+      run: |
+        docker-compose -f docker-compose.yml up -d
+        sleep 30 
+
+    - name: Build Application JAR - product-service
+      working-directory: ./product-service
       run: mvn clean package
 
-    - name: List target directory
+    - name: Build Application JAR - inventory-service
       working-directory: ./inventory-service
-      run: ls -al target
+      run: mvn clean package
 
     - name: Docker Compose Build
       run: docker compose build
