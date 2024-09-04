@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class KafkaConsumerConfig {
+public class KafkaProducerConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServer;
@@ -28,6 +28,8 @@ public class KafkaConsumerConfig {
         configProps.put(JsonSerializer.ADD_TYPE_INFO_HEADERS, false);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class.getName());
+        configProps.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, 30000); // Aumente se necessário
+        configProps.put(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, 120000); // Ajuste para um valor maior que o tempo de envio
 
         return new DefaultKafkaProducerFactory<>(configProps);
     }

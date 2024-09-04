@@ -1,10 +1,8 @@
 package com.io.github.MateusHCandido.inventory_service.message;
 
 import com.io.github.MateusHCandido.inventory_service.entity.domain.ProductStock;
-import com.io.github.MateusHCandido.inventory_service.service.ProductInventoryService;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +25,6 @@ public class ProductInventoryConsumerConfig {
         Map<String, Object> configProps = new HashMap<>();
 
         configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
-        configProps.put(ConsumerConfig.GROUP_ID_CONFIG, "transaction-details-group");
         configProps.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
         configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class.getName());
@@ -37,5 +34,12 @@ public class ProductInventoryConsumerConfig {
                 new StringDeserializer(),
                 new JsonDeserializer<>(ProductStock.class, false
                 ));
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, ProductStock> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, ProductStock> kafkaListenerContainerFactory = new ConcurrentKafkaListenerContainerFactory<>();
+        kafkaListenerContainerFactory.setConsumerFactory(consumerFactory());
+        return kafkaListenerContainerFactory;
     }
 }

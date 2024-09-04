@@ -3,6 +3,6 @@ spring:
     name: product-service
   data:
     mongodb:
-      uri: mongodb://mongo:27017/ecommerce
+      uri: mongodb://localhost:27017/ecommerce
   kafka:
-    bootstrap-servers: kafka:9093
+    bootstrap-servers: localhost:9093

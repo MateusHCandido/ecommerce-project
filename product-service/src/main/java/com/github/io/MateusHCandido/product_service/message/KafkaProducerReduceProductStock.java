@@ -4,7 +4,9 @@ import com.github.io.MateusHCandido.product_service.domain.ProductStock;
 import com.github.io.MateusHCandido.product_service.message.exception.FailMessageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class KafkaProducerReduceProductStock {
 
     private static String REDUCE_PRODUCT_STOCK = "REDUCE_PRODUCT_STOCK";
@@ -19,6 +21,7 @@ public class KafkaProducerReduceProductStock {
     public void sendMessage(ProductStock productStock){
         try{
             productStockKafkaTemplate.send(REDUCE_PRODUCT_STOCK, productStock);
+            System.out.println("MENSAGEM ENVIADA");
         }catch (RuntimeException exception){
             new FailMessageException(exception.getMessage());
         }

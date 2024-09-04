@@ -24,31 +24,39 @@ public class ProductStockEntityService implements ProductStockDomainRepository {
     public void stockProduct(ProductStock productStock) {
         String productName = productStock.getProduct().getProductName();
         ProductCategory productCategory = productStock.getProduct().getProductCategory();
-        Long productQuantity = productStock.getQuantityForStock();
-
-        ProductEntity productEntity = productEntityRepository.findByProductNameAndProductCategory(productName, productCategory);
-
-        if (productEntity == null) throw new ProductNotFoundException("product not found");
-
-        productStockEntityRepository.save(new ProductStockEntity(productEntity, productQuantity));
-    }
-
-    @Override
-    public void reduceStock(ProductStock productStock) {
-        String productName = productStock.getProduct().getProductName();
-        ProductCategory productCategory = productStock.getProduct().getProductCategory();
-        Long quantityFoReduce = productStock.getQuantityForStock();
+        Long quantityForStock = productStock.getQuantityForStock();
 
         ProductEntity productEntity = productEntityRepository.findByProductNameAndProductCategory(productName, productCategory);
         if (productEntity == null) throw new ProductNotFoundException("product not found");
 
         ProductStockEntity stockEntity = productStockEntityRepository.findByProduct(productEntity);
 
-        Long newProductQuantityInStock = stockEntity.getProductQuantity() - quantityFoReduce;
+        if (stockEntity != null){
+            stockEntity.increaseProductQuantity(quantityForStock);
+            productStockEntityRepository.save(stockEntity);
+        } else {
+            productStockEntityRepository.save(new ProductStockEntity(productEntity, quantityForStock));
+        }
 
-        stockEntity.setProductQuantity(newProductQuantityInStock);
+    }
 
-        productStockEntityRepository.save(stockEntity);
+    @Override
+    public void reduceStock(ProductStock productStock) {
+        String productName = productStock.getProduct().getProductName();
+        ProductCategory productCategory = productStock.getProduct().getProductCategory();
+        Long quantityForStock = productStock.getQuantityForStock();
+
+        ProductEntity productEntity = productEntityRepository.findByProductNameAndProductCategory(productName, productCategory);
+        if (productEntity == null) throw new ProductNotFoundException("product not found");
+
+        ProductStockEntity stockEntity = productStockEntityRepository.findByProduct(productEntity);
+
+        if (stockEntity != null){
+            stockEntity.reduceProductQuantity(quantityForStock);
+            productStockEntityRepository.save(stockEntity);
+        } else {
+            productStockEntityRepository.save(new ProductStockEntity(productEntity, quantityForStock));
+        }
     }
 
 

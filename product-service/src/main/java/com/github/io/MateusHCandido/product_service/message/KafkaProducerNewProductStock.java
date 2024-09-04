@@ -21,6 +21,7 @@ public class KafkaProducerNewProductStock {
     public void sendMessage(ProductStock productStock){
         try{
             productStockKafkaTemplate.send(NEW_PRODUCT_STOCK, productStock);
+            System.out.println("MENSAGEM ENVIADA");
         }catch (RuntimeException exception){
             new FailMessageException(exception.getMessage());
         }

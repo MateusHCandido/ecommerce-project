@@ -27,4 +27,12 @@ public class ProductStockEntity {
         this.product = productEntity;
         this.productQuantity = productQuantity;
     }
+
+    public void increaseProductQuantity(Long productQuantity){
+        this.productQuantity += productQuantity;
+    }
+
+    public void reduceProductQuantity(Long productQuantity){
+        this.productQuantity -= productQuantity;
+    }
 }

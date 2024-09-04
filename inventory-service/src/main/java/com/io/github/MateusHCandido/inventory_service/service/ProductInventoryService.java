@@ -14,44 +14,41 @@ public class ProductInventoryService {
     @Autowired
     private ProductInventoryRepository repository;
 
-    public String increaseProductInventory(ProductStock productStock){
+    public void increaseProductInventory(ProductStock productStock){
+        System.out.println(productStock.getProduct().getProductCategory());
         Optional<ProductInventoryEntity> entity = repository
                 .findByProductNameAndProductCategory(productStock.getProduct().getProductName(),
                                                     productStock.getProduct().getProductCategory());
 
         if (entity.isEmpty()) {
-            entity = convertToEntity(productStock);
+            ProductInventoryEntity saveEntity = convertToEntity(productStock);
+            repository.save(saveEntity);
+        }else{
             entity.get().increaseInventory(productStock.getQuantityForStock());
+            repository.save(entity.get());
+            System.out.println("Caiu aqui");
         }
-
-
-        repository.save(entity.get());
-
-        return "product inventory successfully increased";
     }
 
-    public String reduceProductInventory(ProductStock productStock){
+    public void reduceProductInventory(ProductStock productStock){
         Optional<ProductInventoryEntity> entity = repository
                 .findByProductNameAndProductCategory(productStock.getProduct().getProductName(),
                         productStock.getProduct().getProductCategory());
 
-        if (entity.isEmpty()) {
-            return "product not found";
-        }
+        if (entity.isEmpty()) throw new IllegalArgumentException("inventory for product not found");
 
         entity.get().reduceInventory(productStock.getQuantityForStock());
 
         repository.save(entity.get());
-
-        return "product inventory successfully reduced";
     }
 
-    protected Optional<ProductInventoryEntity> convertToEntity(ProductStock productStock){
+    protected ProductInventoryEntity convertToEntity(ProductStock productStock){
         ProductInventoryEntity entity = new ProductInventoryEntity();
         entity.setProductName(productStock.getProduct().getProductName());
         entity.setProductPrice(productStock.getProduct().getProductPrice());
-        entity.updateDescription(productStock.getProduct().getProductDescription());
-
-        return Optional.of(entity);
+        entity.setQuantityForStock(productStock.getQuantityForStock());
+        entity.setProductDescription(productStock.getProduct().getProductDescription());
+        entity.setProductCategory(productStock.getProduct().getProductCategory());
+        return entity;
     }
 }

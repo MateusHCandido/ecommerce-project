@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -60,11 +60,11 @@ class ProductStockServiceTest {
         given(repository.findByProductNameAndProductCategory(productName, productCategory))
                 .willReturn(Optional.of(productInventoryEntity));
 
-        String result = service.increaseProductInventory(productStock);
+        service.increaseProductInventory(productStock);
 
         verify(repository, times(1)).save(any(ProductInventoryEntity.class));
         verify(repository, times(1)).findByProductNameAndProductCategory(productName, productCategory);
-        assertEquals("product inventory successfully increased", result);
+
     }
 
     @Test
@@ -72,22 +72,10 @@ class ProductStockServiceTest {
         given(repository.findByProductNameAndProductCategory(productName, productCategory))
                 .willReturn(Optional.of(productInventoryEntity));
 
-        String result = service.reduceProductInventory(productStock);
+        service.reduceProductInventory(productStock);
 
         verify(repository, times(1)).save(any(ProductInventoryEntity.class));
         verify(repository, times(1)).findByProductNameAndProductCategory(productName, productCategory);
-        assertEquals("product inventory successfully reduced", result);
     }
 
-    @Test
-    @DisplayName("The test must return a message of product not found")
-    void shouldReturnProductReservationFailure(){
-        given(repository.findByProductNameAndProductCategory(productName, productCategory))
-                .willReturn(Optional.empty());
-
-        String result = service.reduceProductInventory(productStock);
-
-        verify(repository, times(1)).findByProductNameAndProductCategory(productName, productCategory);
-        assertEquals("product not found", result);
-    }
 }

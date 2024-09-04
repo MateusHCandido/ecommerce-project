@@ -48,7 +48,4 @@ public class ProductInventoryEntity {
         this.updatedInventoryTimestamp = LocalDateTime.now();
     }
 
-    public void updateDescription(String description) {
-        this.productDescription = description;
-    }
 }
