@@ -32,10 +32,6 @@ jobs:
         docker-compose -f docker-compose.yml up -d
         sleep 30 
 
-    - name: Build Application JAR - product-service
-      working-directory: ./product-service
-      run: mvn clean package
-
     - name: Build Application JAR - inventory-service
       working-directory: ./inventory-service
       run: mvn clean package
