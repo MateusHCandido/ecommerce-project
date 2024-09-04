@@ -1,4 +1,5 @@
 FROM openjdk:17
-WORKDIR /app
-COPY target/ecommerce-inventory-service-*.jar app.jar
-ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app/app.jar"]
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+RUN bash -c 'touch /app.jar'
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app.jar"]
