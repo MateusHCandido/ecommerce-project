@@ -58,6 +58,7 @@ class ProductStockEntityServiceTest {
 
         given(productEntityRepository.findByProductNameAndProductCategory(productName, productCategory))
                 .willReturn(productEntity);
+        given(stockEntityRepository.findByProduct(any(ProductEntity.class))).willReturn(productStockEntity);
 
         productStockEntityService.stockProduct(productStockDomain);
 

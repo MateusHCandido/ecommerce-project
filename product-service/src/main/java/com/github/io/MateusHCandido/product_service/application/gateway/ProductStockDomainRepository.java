@@ -6,4 +6,6 @@ public interface ProductStockDomainRepository {
 
 
     void stockProduct(ProductStock productStock);
+
+    void reduceStock(ProductStock productStock);
 }

@@ -6,21 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-
 @Component
-public class KafkaProducerNewProductStock {
+public class KafkaProducerReduceProductStock {
 
-    private static String NEW_PRODUCT_STOCK = "NEW_PRODUCT_STOCK";
+    private static String REDUCE_PRODUCT_STOCK = "REDUCE_PRODUCT_STOCK";
+
     @Autowired
     private final KafkaTemplate<String, ProductStock> productStockKafkaTemplate;
 
-    public KafkaProducerNewProductStock(KafkaTemplate<String, ProductStock> productStockKafkaTemplate) {
+    public KafkaProducerReduceProductStock(KafkaTemplate<String, ProductStock> productStockKafkaTemplate) {
         this.productStockKafkaTemplate = productStockKafkaTemplate;
     }
 
     public void sendMessage(ProductStock productStock){
         try{
-            productStockKafkaTemplate.send(NEW_PRODUCT_STOCK, productStock);
+            productStockKafkaTemplate.send(REDUCE_PRODUCT_STOCK, productStock);
             System.out.println("MENSAGEM ENVIADA");
         }catch (RuntimeException exception){
             new FailMessageException(exception.getMessage());

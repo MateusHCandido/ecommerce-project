@@ -19,7 +19,7 @@ public class Product {
     public Product(String productName, ProductCategory productCategory, BigDecimal productPrice, String productDescription) {
         verifyProductName(productName);
         verifyProductCategory(productCategory);
-        //verifyProductPrice(productPrice);
+        verifyProductPrice(productPrice);
         verifyProductDescription(productDescription);
 
         this.productName = productName;

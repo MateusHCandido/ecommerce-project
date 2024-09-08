@@ -1,17 +1,6 @@
 version: '3.8'
 
 services:
-  mongo:
-    image: mongo:latest
-    container_name: mongodb
-    restart: always
-    environment:
-      TZ: America/Sao_Paulo
-    ports:
-      - "27017:27017"
-    networks:
-      - ecommerce-network
-
   zookeeper:
     image: wurstmeister/zookeeper:latest
     container_name: zookeeper
@@ -19,8 +8,6 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-    depends_on:
-      - mongo
     ports:
       - "2181:2181"
     networks:
@@ -43,25 +30,39 @@ services:
       - ecommerce-network
     depends_on:
       - zookeeper
-
-  product-service:
-    image: mateushcds/ecommerce-product-service
+  mysql:
+    image: mysql:latest
+    container_name: mysql
     restart: always
-    build: ./product-service
+    environment:
+      MYSQL_DATABASE: ecommerce_db
+      MYSQL_USER: mateuzzo
+      MYSQL_PASSWORD: payment123*
+      MYSQL_ROOT_PASSWORD: rootpassword
+      TZ: America/Sao_Paulo
+    ports:
+      - "3306:3306"
+    networks:
+      - ecommerce-network
+      
+  inventory-service:
+    image: mateushcds/ecommerce-inventory-service
+    restart: always
+    build: ./inventory-service
     working_dir: /app
     environment:
       TZ: America/Sao_Paulo
-      SPRING.APPLICATION.NAME: product-service
+      SPRING.APPLICATION.NAME: inventory-service
       SPRING.PROFILES.ACTIVE: dev
     depends_on:
+      - mysql
       - kafka
     networks:
       - ecommerce-network
     ports:
-      - "8080:8080"
+      - "8081:8081"
     command: mvn spring-boot:run
 
 networks:
   ecommerce-network:
     driver: bridge
-
