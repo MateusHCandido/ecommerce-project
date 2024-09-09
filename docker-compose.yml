@@ -59,7 +59,7 @@ services:
     build: ./product-service
     working_dir: /app
     environment:
-      TZ: America/Sao_Paulo
+      TZ: z
       SPRING.APPLICATION.NAME: product-service
       SPRING.PROFILES.ACTIVE: dev
     depends_on:

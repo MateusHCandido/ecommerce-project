@@ -50,6 +50,7 @@ public class ProductStockEntityService implements ProductStockDomainRepository {
         if (productEntity == null) throw new ProductNotFoundException("product not found");
 
         ProductStockEntity stockEntity = productStockEntityRepository.findByProduct(productEntity);
+        verifyQuantityForReduce(quantityForStock, stockEntity);
 
         if (stockEntity != null){
             stockEntity.reduceProductQuantity(quantityForStock);
@@ -57,6 +58,11 @@ public class ProductStockEntityService implements ProductStockDomainRepository {
         } else {
             productStockEntityRepository.save(new ProductStockEntity(productEntity, quantityForStock));
         }
+    }
+
+    protected static void verifyQuantityForReduce(Long productQuantity, ProductStockEntity productStock){
+        boolean isMoreThanStorageQuantity = productQuantity > productStock.getProductQuantity();
+        if (isMoreThanStorageQuantity) throw new IllegalArgumentException("the product quantity cannot be more than of storage quantity");
     }
 
 
