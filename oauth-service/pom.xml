@@ -11,9 +11,9 @@
 	</parent>
 
 	<groupId>com.github.MateusHCandido</groupId>
-	<artifactId>login-auth_api</artifactId>
+	<artifactId>oauth-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>login-auth_api</name>
+	<name>oauth-servie</name>
 
 	<properties>
 		<java.version>17</java.version>
@@ -62,7 +62,11 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
